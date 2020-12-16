@@ -1,0 +1,56 @@
+# Enhancement Three
+## Database
+###### Flight Query
+
+mysql> use flight_reservation;
+
+alter table customer add school_name varchar(20) not null;
+alter table customer add emergency_contact varchar(20) not null;
+
+update customer set school_name='SNHU'
+order by customer_id asc limit 5;
+
+update customer set school_name='Suny Suffolk'
+order by customer_id desc limit 5;
+
+insert into customer (first_name, last_name, school_name, emergency_contact)
+values('John','Doe', 'Suny Suffolk');
+
+insert into customer (first_name, last_name, school_name, emergency_contact)
+values('Tony','Evans', 'Adelphi');
+
+insert into customer (first_name, last_name, school_name, emergency_contact)
+values('Veronica','Meyers', 'Saint Johns');
+
+insert into customer (first_name, last_name, school_name, emergency_contact)
+values('Sam','Smith', 'Brooklyn');
+
+insert into customer (first_name, last_name, school_name, emergency_contact)
+values('Guismet','Francisque', 'SNHU');
+
+insert into flight
+(from_city,to_city,departure_date_time,arrival_date_time,status_id, emergency_contact)
+values('Nevada','Los Vegas','2019-06-06 09:30:00','2019-06-06 02:40:00',12);
+
+insert into flight
+(from_city,to_city,departure_date_time,arrival_date_time,status_id, emergency_contact)
+values('New York','Georgia','2019-06-12 10:30:00','2019-06-12 03:45:00',14);
+
+insert into flight_reservation
+(flight_id,customer_id)
+values(105,110);
+
+insert into flight_reservation
+(flight_id,customer_id)
+values(106,112);
+
+insert into flight_reservation
+(flight_id,customer_id)
+values(107,114);
+
+insert into flight_reservation
+(flight_id,customer_id)
+values(108,116);
+
+delete from flights
+where from_city ='Seattle' and to_city='Los Vegas';
