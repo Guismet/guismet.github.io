@@ -1,0 +1,128 @@
+# Enhancement One
+## Software Design and Engineering
+###### Authentication
+
+
+// Name        : AuthenticationCR.java
+// Author      : Guismet Francisque
+// Course      : CS 499 Computer Science Capstone 20EW2
+// Module 3    : 3-2 Milestone Two: Enhancement One: Software Design and Engineering
+
+
+
+/*
+ This programs purpose is to validate the credentials of the users at a zoo. If the user
+inputs a username and/or password incorrectly, after 3 attempts, the program will exit.
+If the login is successful, the user will be prompted to logout or continue.
+
+Note: Some unecessary comments were removed.
+ */
+
+
+package authentication;
+
+
+import java.io.File;
+import java.security.MessageDigest;
+import java.util.Scanner;
+
+
+    public class Authentication {
+
+        public static void main(String[] args) throws Exception {
+
+// Create an object of Scanner class as scan to accept input from the console
+            Scanner scan = new Scanner(System.in);
+
+//Declare a variable to keep track the number of attempts
+            int attempts = 0;
+
+// Repeat until a successful attempt has been made or three unsuccessful attempts have been made or a user chooses to exit*/
+
+while(true) {
+
+                System.out.println("Enter user name: ");
+                String user = scan.nextLine();
+
+
+                System.out.println("Enter password: ");
+                String original = scan.nextLine();
+
+// Password conversion using a message digest five (MD5) hash
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(original.getBytes());
+            byte[] digest = md.digest();
+    StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+}
+// Declare a boolean variable done to keep track whether a login is successful or not
+            boolean done = false;
+
+// Create object of Scanner to Open credentials.txt file
+            Scanner file = new Scanner(new File("Credentials.txt"));
+
+// User credentials' search within the credentials file
+while(file.hasNextLine()) {
+            String record = file.nextLine();
+            String columns[] = record.split("\t");
+
+// Checks the credentials against the valid credentials provided in the credentials file
+if(columns[0].trim().equals(user)) {
+
+//Check password 
+if(columns[1].trim().equals(sb.toString())){ 
+
+// If the passwords are same, set the boolean value authenticationSuccess to true
+            done = true;//Login success
+
+//Open the role file
+            Scanner sc = new Scanner(new File(columns[3].trim() + ".txt"));
+
+//Display the information stored in the role file
+while(sc.hasNextLine()) {
+
+                System.out.println(sc.nextLine());
+}
+break;
+}
+}
+}
+
+// If login is successful, prompt user to quit or login as new user
+if(done) {
+                System.out.println("Type q for Quit or n for New User: ");
+                String ch = scan.nextLine();
+
+//If user wants to log out, exit the system.
+if(ch.toLowerCase().charAt(0) == 'y') {
+                System.out.println("Successfully logged out.");
+break;
+}
+//If user wants to continue, set the boolean value authenticationSuccess to true for new login
+
+else {
+        done = false;
+}
+}
+
+// If login is not successful, update the number of attempts
+else {
+        attempts ++;
+
+// If maximum attempts reached,exit the program
+
+if(attempts == 3) {
+                System.out.println("Maximum attempts reached!\nExiting...");
+break;
+}
+
+// Otherwise, prompt user to enter credentials again
+else {
+
+                System.out.println("Please enter correct credentials!");   
+}
+}
+}
+}
+    }
